@@ -1,0 +1,112 @@
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+ami = ""
+instance_type = "t2.micro"
+}
+
+
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+count = 2
+ami = ""
+instance_type = "t2.micro"
+}
+
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+ami = ""
+instance_type = var.instance_type
+}
+
+variable "instance_type" {
+description = ""
+type = string
+default = "t2.micro"
+}
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+ami = ""
+instance_type = "t2.micro"
+count = var.instance_count
+}
+
+variable "instance_count" {
+description = ""
+type = number
+default =3
+}
+
+
+
+
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+ami = ""
+instance_type = "t2.micro""
+instance_type = var.instance_count
+}
+
+variable "instance_count" {
+description = ""
+type = number
+default = 2
+}
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_iam_user" "two" {
+count = length(var.user_names)
+name = var.user_names[count.index]
+}
+
+variable "user_names" {
+description = ""
+type = list(string)
+default = ["vinod", "chandhu", "nagesh", "anil"]
+}
+
+
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+ami = ""
+instance_type = "t2.micro"
+tags = var.instance_tags
+}
+
+
+variable "instance_tags" {
+description = ""
+type = map(string)
+default = {
+Name = "appserver"
+Env = "prod"
+Client = "swiggy"
+Com = "Tcs"
+}
+}
+
