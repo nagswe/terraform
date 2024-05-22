@@ -1,0 +1,189 @@
+main.tf
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+ami = ""
+instance_type = var.instance_type
+tags = {
+Name = var.instance_name
+}
+}
+
+vi variable.tf
+
+variable "instance_type" {
+}
+
+variable "instance_name" {
+}
+
+vi swiggy.tfvars
+
+instance_type = "t2.micro"
+
+instance_name = "swiggy"
+
+vi zomato.tfvars
+
+instance_type = "t2.large"
+
+instance = "zomato"
+
+terraform apply -var.file="swiggy.tfvars" --auto-approve
+
+rm -rf swiggy.tfvars
+rm -rf zomato.tfvars
+rm -rf vatiable.tf
+
+#through command line 
+vi main.tf
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+ami = ""
+instance_type = var.instance_type
+tags = {
+Name = var.instance_name
+}
+}
+
+variable "instance_type" {
+}
+
+terraform apply -vars="instance_type=t2.micro"
+
+#terraform output value
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+ami = ""
+instance_type = "t2.micro"
+tags = {
+Name = var.instance_name
+}
+}
+
+output "instance_atributes" {
+value = aws_instance.one.public_ip
+}
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+ami = ""
+instance_type = "t2.micro"
+tags = {
+Name = var.instance_name
+}
+}
+
+output "instance_atributes" {
+value = [aws_instance.one.public_ip, aws_instance.one.private_ip]
+}
+
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_instance" "one" {
+ami = ""
+instance_type = "t2.micro"
+tags = {
+Name = var.instance_name
+}
+}
+
+output "instance_atributes" {
+value = [aws_instance.one.public_ip, aws_instance.one.private_ip, aws_instance.one.volume_id, aws_instance.one.public_dns]
+}
+
+
+#terraform local
+
+vi main.tf
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+locals {
+staging_env = "prod"
+}
+
+resource "aws_vpc" "one" {
+cidr_block = "10.5.0.0/16"
+tags = {
+Name = "${local.string_env}-vpc"
+}
+}
+
+resource "aws_instance" "two" {
+vpc_id = aws_vpc.one.vpc.id
+cidr_block = "10.5.0.0/16"
+tags = {
+Name = "${local.staging_env}-subnet"
+}
+}
+
+
+resource "aws_instance" "three" {
+ami = ""
+instance_type = "t2.micro"
+subnet_id = aws_subnet.two.id
+tags = {
+Name = "${local.staging_env}-instance"
+}
+}
+
+resource "aws_s3_bucket" "four" {
+bucket = "agt1234567"
+}
+
+
+terraform fmt
+terraform validate
+terraform graph
+
+terraform destroy -target=aws_s3_bucket.four
+terraform apply -target=aws_s3_bucket.four
+
+# create EBS volume
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_ebs_volume" "example" {
+  availability_zone = "ap-south-1"
+  size              = 40
+
+  tags = {
+    Name = "HelloWorld"
+  }
+}
+
+# terraform EFS
+
+provider "aws" {
+region = "ap-south-1"
+}
+
+resource "aws_efs_file_system" "foo" {
+  creation_token = "my-product"
+
+  tags = {
+    Name = "MyProduct"
+  }
+}
