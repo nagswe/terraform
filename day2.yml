@@ -68,7 +68,7 @@ resource "aws_instance" "one" {
 ami = ""
 instance_type = "t2.micro"
 tags = {
-Name = var.instance_name
+Name = "Nagesh"
 }
 }
 
